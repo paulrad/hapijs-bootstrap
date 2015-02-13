@@ -1,0 +1,19 @@
+{
+  "name": "mon_projet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Rad <paul@paulrad.com> (http://paulrad.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^2.6.1",
+    "config": "^1.10.0",
+    "hapi": "^8.2.0",
+    "joi": "^5.1.0",
+    "mongoose": "^3.8.23",
+    "q": "^1.1.2"
+  }
+}
