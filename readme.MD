@@ -13,7 +13,7 @@ Il vous sera nécessaire de lancer MongoDB pour que le script fonctionne.
 ### Lancement
 
 ```
-git clone http://
+git clone git@github.com:paulrad/hapijs-bootstrap.git ./hapijs_bootstrap
 cd hapijs_bootstrap
 npm install
 node index.js
