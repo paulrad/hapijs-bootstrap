@@ -40,6 +40,44 @@
   // Création de notre instance mongoose
   Mongoose.connect(Config.get('mongodb.uri'), Config.get('mongodb.options'));
 
+  // Du log si jamais la connexion avec MongoDB n'a pas pu se faire
+  Mongoose.connection.on('error', function(e) {
+    err("Mongoose ne peut ouvrir de connection sur %s", Config.get('mongodb.uri'));
+    err("Options passées:");
+    err(Config.get('mongodb.options'));
+    err("Sortie d'erreur:");
+    err(e);
+    exit();
+  });
+
+  // En cas de succes de connexion avec MongoDB
+  Mongoose.connection.on('connected', function() {
+    log("Mongoose a ouvert une instance MongoDB");
+  });
+
+  // Si mongoose a perdu la connexion avec MongoDB
+  Mongoose.connection.on('disconnected', function() {
+    err("Perte de connection MongoDB");
+
+    // On réessai d'ouvrir une connexion au bout de 15 secondes
+    setTimeout(function() {
+      Mongoose.connect(Config.get('mongodb.uri'), Config.get('mongodb.options'));
+      err("Tentative de reconnexion à MongoDB");
+    }, 15000);
+  });
+
+  // Si le processus du serveur s'arrête
+  process.on('SIGINT', function() {
+    // Si la connexion mongoose est ouverte
+    if (mongoose.connection.readyState === 1) {
+      // On force la fermeture de la connexion
+      Mongoose.connection.close(function() {
+        log("Fermeture de l'application, on force la déconnexion de Mongoose");
+        exit();
+      });
+    }
+  });
+
   global['Models'] = {};
 
   Utils.getFiles('models').forEach(function(modelFile) {
