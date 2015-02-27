@@ -69,7 +69,7 @@
   // Si le processus du serveur s'arrête
   process.on('SIGINT', function() {
     // Si la connexion mongoose est ouverte
-    if (mongoose.connection.readyState === 1) {
+    if (Mongoose.connection.readyState === 1) {
       // On force la fermeture de la connexion
       Mongoose.connection.close(function() {
         log("Fermeture de l'application, on force la déconnexion de Mongoose");
